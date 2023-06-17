@@ -46,8 +46,8 @@ public class StudentDaoImpl implements StudentDao {
     @Override
     public Student findStudentById(int id) {
         //YOUR CODE STARTS HERE
-        String sql = "SELECT * FROM student WHERE id = ?";
-        return jdbcTemplate.queryForObject(sql, new StudentMapper(), id);
+        String sql = "SELECT * FROM student WHERE sid = ?";
+		return jdbcTemplate.queryForObject(sql, new StudentMapper(), id);
 
         //YOUR CODE ENDS HERE
     }
@@ -55,17 +55,16 @@ public class StudentDaoImpl implements StudentDao {
     @Override
     public void updateStudent(Student student) {
         //YOUR CODE STARTS HERE
-        String sql = "UPDATE student SET name = ?, age = ?, email = ? WHERE id = ?";
-        jdbcTemplate.update(sql, student.getName(), student.getAge(), student.getEmail(), student.getId());
-
+        String sql = "UPDATE student SET fName = ?,lName = ? where sid = ?";
+		jdbcTemplate.update(sql, student.getStudentFirstName(), student.getStudentLastName(), student.getStudentId());
         //YOUR CODE ENDS HERE
     }
 
     @Override
     public void deleteStudent(int id) {
         //YOUR CODE STARTS HERE
-        String sql = "DELETE FROM student WHERE id = ?";
-        jdbcTemplate.update(sql, id);
+        String sql = "DELETE FROM student WHERE sid = ?";
+		jdbcTemplate.update(sql, id);
 
         //YOUR CODE ENDS HERE
     }
@@ -73,8 +72,8 @@ public class StudentDaoImpl implements StudentDao {
     @Override
     public void addStudentToCourse(int studentId, int courseId) {
         //YOUR CODE STARTS HERE
-        String sql = "INSERT INTO student_course (student_id, course_id) VALUES (?, ?)";
-        jdbcTemplate.update(sql, studentId, courseId);
+        String sql = "INSERT INTO student_course VALUES (?, ?)";
+		jdbcTemplate.update(sql, studentId, courseId);
 
         //YOUR CODE ENDS HERE
     }
