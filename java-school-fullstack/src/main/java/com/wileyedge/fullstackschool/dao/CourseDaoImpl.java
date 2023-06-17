@@ -45,8 +45,8 @@ public class CourseDaoImpl implements CourseDao {
     public Course findCourseById(int id) {
         //YOUR CODE STARTS HERE
 	    
-       String sql = "SELECT * FROM course WHERE cid = ?";
-	return jdbcTemplate.queryForObject(sql, new CourseMapper(), id);
+        String sql = "SELECT * FROM course WHERE cid = ?";
+	return jdbcTemplate.queryForObject(sql, new Object[] {id}, new CourseMapper());
 
         //YOUR CODE ENDS HERE
     }
@@ -56,8 +56,7 @@ public class CourseDaoImpl implements CourseDao {
         //YOUR CODE STARTS HERE
 	    
        String sql = "UPDATE course SET courseCode = ?, courseDesc = ?, teacherId = ? WHERE cid = ?";
-	jdbcTemplate.update(sql, course.getCourseName(), course.getCourseDesc(), course.getTeacherId(),
-				course.getCourseId());
+	jdbcTemplate.update(sql, course.getCourseName(), course.getCourseDesc(), course.getTeacherId(), course.getCourseId());
 
         //YOUR CODE ENDS HERE
     }
@@ -67,7 +66,7 @@ public class CourseDaoImpl implements CourseDao {
         //YOUR CODE STARTS HERE
 	    
         String sql = "DELETE FROM course WHERE cid = ?";
-		jdbcTemplate.update(sql, id);
+	jdbcTemplate.update(sql, new Object[] {id});
 
         //YOUR CODE ENDS HERE
     }
@@ -77,7 +76,7 @@ public class CourseDaoImpl implements CourseDao {
         //YOUR CODE STARTS HERE
 	    
         String sql = "DELETE FROM course_student WHERE course_id = ?";
-	jdbcTemplate.update(sql, courseId);
+	jdbcTemplate.update(sql, new Object [] {courseId});
 
         //YOUR CODE ENDS HERE
     }
