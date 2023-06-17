@@ -25,8 +25,7 @@ public class CourseDaoImpl implements CourseDao {
         //YOUR CODE STARTS HERE
 
         String sql = "INSERT INTO course VALUES(?,?,?,?)";
-	jdbcTemplate.update(sql, course.getCourseId(), course.getCourseName(), course.getCourseDesc(),
-				course.getTeacherId());
+	jdbcTemplate.update(sql, course.getCourseId(), course.getCourseName(), course.getCourseDesc(),course.getTeacherId());
 	return course;
 	    
         //YOUR CODE ENDS HERE
