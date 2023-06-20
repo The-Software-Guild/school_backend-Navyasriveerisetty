@@ -10,13 +10,13 @@ public class CourseMapper implements RowMapper<Course> {
     public Course mapRow(ResultSet rs, int rowNum) throws SQLException {
         //YOUR CODE STARTS HERE
 
-        Course r = new Course();
+        Course result = new Course();
     	result.setCourseDesc(rs.getString("courseDesc"));
     	result.setCourseId(rs.getInt("cid"));
     	result.setCourseName(rs.getString("courseCode"));
     	result.setTeacherId(rs.getInt("teacherId"));
 
-        return r;
+        return result;
 
         //YOUR CODE ENDS HERE
     }
