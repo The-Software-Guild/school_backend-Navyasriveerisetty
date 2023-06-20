@@ -17,8 +17,7 @@ public class StudentController {
     public List<Student> getAllStudents() {
         //YOUR CODE STARTS HERE
 
-        List<Student> s = studentServiceImpl.getAllStudents();
-        return s;
+        return studentServiceImpl.getAllStudents();
 
         //YOUR CODE ENDS HERE
     }
@@ -27,8 +26,7 @@ public class StudentController {
     public Student addStudent(@RequestBody Student student) {
         //YOUR CODE STARTS HERE
 
-        Student s = studentServiceImpl.addNewStudent(student);
-        return s;
+        return studentServiceImpl.addNewStudent(student);
 
         //YOUR CODE ENDS HERE
     }
@@ -37,8 +35,7 @@ public class StudentController {
     public Student getStudentById(@PathVariable int id) {
         //YOUR CODE STARTS HERE
 
-        Student s = studentServiceImpl.getStudentById(id);
-        return s;
+        return studentServiceImpl.getStudentById(id);
 
         //YOUR CODE ENDS HERE
     }
@@ -47,8 +44,7 @@ public class StudentController {
     public Student updateStudent(@PathVariable int id, @RequestBody Student student) {
         //YOUR CODE STARTS HERE
 
-    	Student s = studentServiceImpl.updateStudentData(id, student);
-    	return s;
+        return studentServiceImpl.updateStudentData(id, student);
 
         //YOUR CODE ENDS HERE
     }
