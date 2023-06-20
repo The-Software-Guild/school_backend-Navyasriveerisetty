@@ -17,7 +17,8 @@ public class StudentController {
     public List<Student> getAllStudents() {
         //YOUR CODE STARTS HERE
 
-        return studentService.getAllStudents();
+        List<Student> s = studentServiceImpl.getAllStudents();
+        return s;
 
         //YOUR CODE ENDS HERE
     }
@@ -26,7 +27,8 @@ public class StudentController {
     public Student addStudent(@RequestBody Student student) {
         //YOUR CODE STARTS HERE
 
-        return studentService.addStudent(student);
+        Student s = studentServiceImpl.addNewStudent(student);
+        return s;
 
         //YOUR CODE ENDS HERE
     }
@@ -35,7 +37,8 @@ public class StudentController {
     public Student getStudentById(@PathVariable int id) {
         //YOUR CODE STARTS HERE
 
-        return studentService.getStudentById(id);
+        Student s = studentServiceImpl.getStudentById(id);
+        return s;
 
         //YOUR CODE ENDS HERE
     }
@@ -44,7 +47,8 @@ public class StudentController {
     public Student updateStudent(@PathVariable int id, @RequestBody Student student) {
         //YOUR CODE STARTS HERE
 
-        return studentService.updateStudent(id, student);
+    	Student s = studentServiceImpl.updateStudentData(id, student);
+    	return s;
 
         //YOUR CODE ENDS HERE
     }
@@ -53,7 +57,7 @@ public class StudentController {
     public void deleteStudent(@PathVariable int id) {
         //YOUR CODE STARTS HERE
 
-        studentService.deleteStudent(id);
+    	studentServiceImpl.deleteStudentById(id);
 
         //YOUR CODE ENDS HERE
     }
@@ -62,7 +66,7 @@ public class StudentController {
     public void deleteStudentFromCourse(@PathVariable int studentId, @PathVariable int courseId) {
         //YOUR CODE STARTS HERE
 
-        studentService.deleteStudentFromCourse(studentId, courseId);
+    	studentServiceImpl.deleteStudentFromCourse(studentId, courseId);
 
         //YOUR CODE ENDS HERE
     }
@@ -71,7 +75,7 @@ public class StudentController {
     public void addStudentToCourse(@PathVariable int studentId, @PathVariable int courseId) {
         //YOUR CODE STARTS HERE
 
-        studentService.addStudentToCourse(studentId, courseId);
+    	studentServiceImpl.addStudentToCourse(studentId, courseId);
 
         //YOUR CODE ENDS HERE
     }
