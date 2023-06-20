@@ -54,8 +54,8 @@ public class CourseDaoImpl implements CourseDao {
     public void updateCourse(Course course) {
         //YOUR CODE STARTS HERE
 
-    	String sql = "UPDATE course SET courseCode = ?, courseDesc = ?, teacherId = ? WHERE cid = ?";
-    	jdbcTemplate.update(sql, course.getCourseName(), course.getCourseDesc(), course.getTeacherId(), course.getCourseId());
+    	String sql = "UPDATE course SET courseCode=?, courseDesc=? WHERE cid=?";
+    	jdbcTemplate.update(sql, course.getCourseName(), course.getCourseDesc(), course.getCourseId());
     	
         //YOUR CODE ENDS HERE
     }
@@ -65,7 +65,7 @@ public class CourseDaoImpl implements CourseDao {
         //YOUR CODE STARTS HERE
 
     	String sql = "DELETE FROM course WHERE cid = ?";
-    	jdbcTemplate.update(sql, new Object[] {id});
+    	jdbcTemplate.update(sql, id);
 
         //YOUR CODE ENDS HERE
     }
@@ -75,7 +75,8 @@ public class CourseDaoImpl implements CourseDao {
         //YOUR CODE STARTS HERE
 
     	String sql = "DELETE FROM course_student WHERE course_id = ?";
-    	jdbcTemplate.update(sql, new Object [] {courseId});
+    	jdbcTemplate.update(sql, courseId);
+
 
         //YOUR CODE ENDS HERE
     }
