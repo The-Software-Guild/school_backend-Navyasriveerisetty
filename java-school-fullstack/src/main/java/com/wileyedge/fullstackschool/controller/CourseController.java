@@ -17,39 +17,45 @@ public class CourseController {
     @GetMapping("/courses")
     public List<Course> getAllCourses() {
         //YOUR CODE STARTS HERE
-    	List<Course> courses = courseService.getAllCourses();
-        return courses;
+
+        return courseService.getAllCourses();
+
         //YOUR CODE ENDS HERE
     }
 
     @GetMapping("/{id}")
     public Course getCourseById(@PathVariable int id) {
         //YOUR CODE STARTS HERE
-    	Course c = courseService.getCourseById(id);
-        return c;
+
+        return courseService.getCourseById(id);
+
         //YOUR CODE ENDS HERE
     }
 
     @PostMapping("/add")
     public Course addCourse(@RequestBody Course course) {
         //YOUR CODE STARTS HERE
-    	Course c = courseService.addNewCourse(course);
-        return c;
+
+        return courseService.addNewCourse(course);
+
         //YOUR CODE ENDS HERE
     }
 
     @PutMapping("/{id}")
     public Course updateCourse(@PathVariable int id, @RequestBody Course course) {
         //YOUR CODE STARTS HERE
-    	Course c = courseService.updateCourseData(id, course);
-        return c;
+
+        return courseService.updateCourseData(id, course);
+
         //YOUR CODE ENDS HERE
     }
 
     @DeleteMapping("/{id}")
     public void deleteCourse(@PathVariable int id) {
         //YOUR CODE STARTS HERE
+
     	courseService.deleteCourseById(id);
+
         //YOUR CODE ENDS HERE
     }
 }
