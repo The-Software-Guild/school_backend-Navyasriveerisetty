@@ -1,6 +1,5 @@
 package com.wileyedge.fullstackschool.service;
 
-import com.wileyedge.fullstackschool.dao.CourseDao;
 import com.wileyedge.fullstackschool.dao.StudentDao;
 import com.wileyedge.fullstackschool.model.Course;
 import com.wileyedge.fullstackschool.model.Student;
@@ -15,76 +14,80 @@ public class StudentServiceImpl implements StudentServiceInterface {
     //YOUR CODE STARTS HERE
     @Autowired
     StudentDao studentDao;
-    @Autowired
-    CourseDao courseDao;
-    List<Student> students = null;
-    List<Course> courses = null;
-    
+
     public StudentServiceImpl(StudentDao studentDao) {
         this.studentDao = studentDao;
     }
+
+    @Autowired
+    CourseServiceImpl courseService;
+
+
 
     //YOUR CODE ENDS HERE
 
     public List<Student> getAllStudents() {
         //YOUR CODE STARTS HERE
 
-    	students = studentDao.getAllStudents();
-        return students;
+        return studentDao.getAllStudents();
 
         //YOUR CODE ENDS HERE
     }
 
     public Student getStudentById(int id) {
         //YOUR CODE STARTS HERE
-
-    	Student student = null;
+    	Student result = null;
     	try {
-    		student = studentDao.findStudentById(id);
+    		result = studentDao.findStudentById(id);
     	} catch (DataAccessException e) {
-    		student.setStudentFirstName("Student Not Found");
-    		student.setStudentLastName("Student Not Found");
+    		result = new Student();
+    		result.setStudentId(id);
+    		result.setStudentFirstName("Student Not Found");
+    		result.setStudentLastName("Student Not Found");
     	}
-    	return student;
+
+        return result;
 
         //YOUR CODE ENDS HERE
     }
 
     public Student addNewStudent(Student student) {
         //YOUR CODE STARTS HERE
-
-    	Student s = null;
-    	
-    	if(student.getStudentFirstName().isBlank() || student.getStudentLastName().isBlank()) {
+    	boolean isValid = true;
+    	if (student.getStudentFirstName() == null || student.getStudentFirstName().length() == 0) {
     		student.setStudentFirstName("First Name blank, student NOT added");
-    		student.setStudentLastName("Last Name blank, student NOT added");
-    		return student;
-    	} else {
-    		s = studentDao.createNewStudent(student);
+    		isValid = false;
     	}
-        return s;
+    	if (student.getStudentLastName() == null || student.getStudentLastName().length() == 0) {
+    		student.setStudentLastName("Last Name blank, student NOT added");
+    		isValid = false;
+    	}
+    	
+    	if (isValid) {
+    		studentDao.createNewStudent(student);
+    	}
+
+        return student;
 
         //YOUR CODE ENDS HERE
     }
 
     public Student updateStudentData(int id, Student student) {
         //YOUR CODE STARTS HERE
-
-    	if(id != student.getStudentId()) {
-    		String response = "IDs do not match, student not updated";
-    		student.setStudentFirstName(response);
-    		student.setStudentLastName(response);
+    	if (id != student.getStudentId()) {
+    		student.setStudentFirstName("IDs do not match, student not updated");
+    		student.setStudentLastName("IDs do not match, student not updated");
     	} else {
     		studentDao.updateStudent(student);
     	}
-    	return student;
+
+        return student;
 
         //YOUR CODE ENDS HERE
     }
 
     public void deleteStudentById(int id) {
         //YOUR CODE STARTS HERE
-
     	studentDao.deleteStudent(id);
 
         //YOUR CODE ENDS HERE
@@ -92,26 +95,13 @@ public class StudentServiceImpl implements StudentServiceInterface {
 
     public void deleteStudentFromCourse(int studentId, int courseId) {
         //YOUR CODE STARTS HERE
-
-    	courses = courseDao.getAllCourses();
-    	boolean outcome = true;
-    	for(Student s : students) {
-    		if(s.getStudentId() == studentId) {
-    			if(s.getStudentFirstName().equals("Student Not Found")) {
-    				System.out.println("Student not found");
-    				outcome = false;
-    			}
-    		}
-    	}
-    	for(Course c : courses) {
-    		if(c.getCourseId() == courseId) {
-    			if(c.getCourseName().equals("Course Not Found")) {
-    				System.out.println("Course not found");
-    				outcome = false;
-    			}
-    		}
-    	}
-    	if(outcome) {
+    	Student s = getStudentById(studentId);
+    	Course c = courseService.getCourseById(courseId);
+    	if (s.getStudentFirstName().equals("Student Not Found")) {
+    		System.out.println("Student not found");
+    	} else if (c.getCourseName().equals("Course Not Found")) {
+    		System.out.println("Course not found");
+    	} else {
     		studentDao.deleteStudentFromCourse(studentId, courseId);
     		System.out.println("Student: " + studentId + " deleted from course: " + courseId);
     	}
@@ -121,31 +111,19 @@ public class StudentServiceImpl implements StudentServiceInterface {
 
     public void addStudentToCourse(int studentId, int courseId) {
         //YOUR CODE STARTS HERE
-
-    	try {
-    		boolean outcome = true;
-        	for(Student s : students) {
-        		if(s.getStudentId() == studentId) {
-        			if(s.getStudentFirstName().equals("Student Not Found")) {
-        				System.out.println("Student not found");
-        				outcome = false;
-        			}
-        		}
-        	}
-        	for(Course c : courses) {
-        		if(c.getCourseId() == courseId) {
-        			if(c.getCourseName().equals("Course Not Found")) {
-        				System.out.println("Course not found");
-        				outcome = false;
-        			}
-        		}
-        	}
-        	if(outcome) {
-        		studentDao.deleteStudentFromCourse(studentId, courseId);
-        		System.out.println("Student: " + studentId + " added to course: " + courseId);
-        	}
-    	} catch(Exception e) {
-    		System.out.println("Student: " + studentId + " already enrolled in course: " + courseId);
+    	Student s = getStudentById(studentId);
+    	Course c = courseService.getCourseById(courseId);
+    	if (s.getStudentFirstName().equals("Student Not Found")) {
+    		System.out.println("Student not found");
+    	} else if (c.getCourseName().equals("Course Not Found")) {
+    		System.out.println("Course not found");
+    	} else {
+    		try {
+	    		studentDao.addStudentToCourse(studentId, courseId);
+	    		System.out.println("Student: " + studentId + " added to course: " + courseId);
+    		} catch (Exception e) {
+    			System.out.println("Student: " + studentId + " already enrolled in course: " + courseId);
+    		}
     	}
 
         //YOUR CODE ENDS HERE
