@@ -18,67 +18,71 @@ public class TeacherServiceImpl implements TeacherServiceInterface {
         this.teacherDao = teacherDao;
     }
 
+
     //YOUR CODE ENDS HERE
 
     public List<Teacher> getAllTeachers() {
         //YOUR CODE STARTS HERE
 
-    	List<Teacher> teachers = teacherDao.getAllTeachers();
-        return teachers;
+        return teacherDao.getAllTeachers();
 
         //YOUR CODE ENDS HERE
     }
 
     public Teacher getTeacherById(int id) {
         //YOUR CODE STARTS HERE
-
-    	Teacher teacher = null;
+    	Teacher result = null;
     	try {
-    		teacher = teacherDao.findTeacherById(id);
+    		result = teacherDao.findTeacherById(id);
     	} catch (DataAccessException e) {
-    		teacher.setTeacherFName("Teacher Not Found");
-    		teacher.setTeacherLName("Teacher Not Found");
+    		result = new Teacher();
+    		result.setTeacherId(id);
+    		result.setTeacherFName("Teacher Not Found");
+    		result.setTeacherLName("Teacher Not Found");
     	}
-    	return teacher;
+
+        return result;
 
         //YOUR CODE ENDS HERE
     }
 
     public Teacher addNewTeacher(Teacher teacher) {
         //YOUR CODE STARTS HERE
-
-    	Teacher t = null;
-    	
-    	if(teacher.getTeacherFName().isBlank() || teacher.getTeacherLName().isBlank()) {
+    	boolean isValid = true;
+    	if (teacher.getTeacherFName() == null || teacher.getTeacherFName().length() == 0) {
     		teacher.setTeacherFName("First Name blank, teacher NOT added");
-    		teacher.setTeacherLName("Last Name blank, teacher NOT added");
-    		return teacher;
-    	} else {
-    		t = teacherDao.createNewTeacher(teacher);
+    		isValid = false;
     	}
-        return t;
+    	if (teacher.getTeacherLName() == null || teacher.getTeacherLName().length() == 0) {
+    		teacher.setTeacherLName("Last Name blank, teacher NOT added");
+    		isValid = false;
+    	}
+    	
+    	if (isValid) {
+    		teacherDao.createNewTeacher(teacher);
+    	}
+
+        return teacher;
 
         //YOUR CODE ENDS HERE
     }
 
     public Teacher updateTeacherData(int id, Teacher teacher) {
         //YOUR CODE STARTS HERE
-
-    	if(id != teacher.getTeacherId()) {
-    		String response = "IDs do not match, teacher not updated";
-    		teacher.setTeacherFName(response);
-    		teacher.setTeacherLName(response);
+    	if (id != teacher.getTeacherId()) {
+    		teacher.setTeacherFName("IDs do not match, teacher not updated");
+    		teacher.setTeacherLName("IDs do not match, teacher not updated");
     	} else {
     		teacherDao.updateTeacher(teacher);
     	}
-    	return teacher;
+
+        return teacher;
 
         //YOUR CODE ENDS HERE
     }
 
     public void deleteTeacherById(int id) {
         //YOUR CODE STARTS HERE
-
     	teacherDao.deleteTeacher(id);
 
         //YOUR CODE ENDS HERE
