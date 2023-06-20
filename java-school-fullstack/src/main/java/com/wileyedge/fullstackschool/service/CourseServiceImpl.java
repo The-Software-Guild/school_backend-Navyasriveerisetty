@@ -18,70 +18,74 @@ public class CourseServiceImpl implements CourseServiceInterface {
         this.courseDao = courseDao;
     }
 
+
     //YOUR CODE ENDS HERE
 
     public List<Course> getAllCourses() {
         //YOUR CODE STARTS HERE
 
-        List<Course> courses = courseDao.getAllCourses();
-        return courses;
+        return courseDao.getAllCourses();
 
         //YOUR CODE ENDS HERE
     }
 
     public Course getCourseById(int id) {
         //YOUR CODE STARTS HERE
-    	
-    	Course course = null;
+    	Course result = null;
     	try {
-    		course = courseDao.findCourseById(id);
+    		result = courseDao.findCourseById(id);
     	} catch (DataAccessException e) {
-    		course.setCourseDesc("Course Not Found");
-    		course.setCourseName("Course Not Found");
+    		result = new Course();
+    		result.setCourseId(id);
+    		result.setCourseDesc("Course Not Found");
+    		result.setCourseName("Course Not Found");
     	}
-    	return course;
+
+        return result;
 
         //YOUR CODE ENDS HERE
     }
 
     public Course addNewCourse(Course course) {
         //YOUR CODE STARTS HERE
-    	
-    	Course c = null;
-    	
-    	if(course.getCourseName().isBlank() || course.getCourseDesc().isBlank()) {
+    	boolean isValid = true;
+    	if (course.getCourseName() == null || course.getCourseName().length() == 0) {
     		course.setCourseName("Name blank, course NOT added");
-    		course.setCourseDesc("Description blank, course NOT added");
-    		return course;
-    	} else {
-    		c = courseDao.createNewCourse(course);
+    		isValid = false;
     	}
-        return c;
+    	if (course.getCourseDesc() == null || course.getCourseDesc().length() == 0) {
+    		course.setCourseDesc("Description blank, course NOT added");
+    		isValid = false;
+    	}
+    	
+    	if (isValid) {
+    		courseDao.createNewCourse(course);
+    	}
+
+        return course;
 
         //YOUR CODE ENDS HERE
     }
 
     public Course updateCourseData(int id, Course course) {
         //YOUR CODE STARTS HERE
-
-    	if(id != course.getCourseId()) {
-    		String response = "IDs do not match, course not updated";
-    		course.setCourseDesc(response);
-    		course.setCourseName(response);
+    	if (id != course.getCourseId()) {
+    		course.setCourseDesc("IDs do not match, course not updated");
+    		course.setCourseName("IDs do not match, course not updated");
     	} else {
     		courseDao.updateCourse(course);
     	}
-    	return course;
+
+        return course;
 
         //YOUR CODE ENDS HERE
     }
 
     public void deleteCourseById(int id) {
         //YOUR CODE STARTS HERE
-
     	courseDao.deleteCourse(id);
     	System.out.println("Course ID: " + id + " deleted");
-    	
+
         //YOUR CODE ENDS HERE
     }
 }
